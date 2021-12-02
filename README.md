@@ -201,3 +201,59 @@ knitr::include_graphics("man/figures/f1.png")
 ```
 
 <img src="man/figures/f1.png" width="50%" />
+
+Excluding the intercept entirely reminded me of nonlinear models, so can
+we just one of those?
+
+``` r
+nform <- ~ beta * input ^ 2
+nfun <- deriv(
+  nform, 
+  namevec = "beta", 
+  function.arg = c("input", "beta")
+)
+
+mr_nl <- nlmer(
+  vocab ~ nfun(age_12, beta) ~ beta | id, 
+  data = vocab_growth, 
+  start = c(beta = 0)
+)
+
+summary(mr_nl)
+#> Nonlinear mixed model fit by maximum likelihood  ['nlmerMod']
+#> Formula: vocab ~ nfun(age_12, beta) ~ beta | id
+#>    Data: vocab_growth
+#> 
+#>      AIC      BIC   logLik deviance df.resid 
+#>   1303.4   1311.9   -648.7   1297.4      123 
+#> 
+#> Scaled residuals: 
+#>      Min       1Q   Median       3Q      Max 
+#> -2.24507 -0.47379  0.00078  0.10689  3.06098 
+#> 
+#> Random effects:
+#>  Groups   Name Variance Std.Dev.
+#>  id       beta   1.355   1.164  
+#>  Residual      821.047  28.654  
+#> Number of obs: 126, groups:  id, 22
+#> 
+#> Fixed effects:
+#>      Estimate Std. Error t value
+#> beta   1.9665     0.2502    7.86
+
+fixef(mr_nl)
+#>     beta 
+#> 1.966504
+fixef(mr)
+#> age_12_sq 
+#>  1.966307
+
+VarCorr(mr_nl)
+#>  Groups   Name Std.Dev.
+#>  id       beta  1.1642 
+#>  Residual      28.6539
+VarCorr(mr)
+#>  Groups   Name      Std.Dev.
+#>  id       age_12_sq  1.1919 
+#>  Residual           28.6548
+```

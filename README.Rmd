@@ -12,7 +12,6 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 library(tidyverse)
-
 ```
 
 # huttenlocher1991
@@ -112,5 +111,31 @@ ggplot(data %>% filter(id %in% c(11, 5, 7))) +
   labs(x = "age [months]", y = "vocabulary")
 
 knitr::include_graphics("man/figures/f1.png")
+```
+
+Excluding the intercept entirely reminded me of nonlinear models, so can we just
+one of those?
+
+```{r}
+nform <- ~ beta * input ^ 2
+nfun <- deriv(
+  nform, 
+  namevec = "beta", 
+  function.arg = c("input", "beta")
+)
+
+mr_nl <- nlmer(
+  vocab ~ nfun(age_12, beta) ~ beta | id, 
+  data = vocab_growth, 
+  start = c(beta = 0)
+)
+
+summary(mr_nl)
+
+fixef(mr_nl)
+fixef(mr)
+
+VarCorr(mr_nl)
+VarCorr(mr)
 ```
 
