@@ -19,6 +19,10 @@ longitudinal/repeated measures growth data. It is also unusual because
 in the associated article, the only fixed effect predictor for growth is
 quadratic time–that is, there are no intercept or linear time terms.
 
+I retrieved this data from the [HLM software’s examples
+page](https://ssicentral.com/index.php/products/hlm-general/hlm-examples/)
+and created a .csv-file out of it.
+
 ## Installation
 
 You can install the development version of huttenlocher1991 like so:
