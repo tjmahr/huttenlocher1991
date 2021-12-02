@@ -1,0 +1,56 @@
+Package: huttenlocher1991
+Type: Package
+Title: Vocabulary growth in 22 infants (Huttenlocher et al., 1991) 
+Version: 0.1.0
+Authors@R:
+  c(
+    person(
+      given = "Tristan",
+      family = "Mahr",
+      role = c("cre"),
+      comment = c(ORCID = "0000-0002-8890-5116"), 
+      email = "tjmahr@users.noreply.github.com"
+    ),
+    person(
+      given = "Janellen",
+      family = "Huttenlocher",
+      role = c("aut"),
+      comment = "author of 1991 article"
+    ),
+    person(
+      given = "Wendy",
+      family = "Haight",
+      role = c("aut"),
+      comment = "author of 1991 article"
+    ),
+    person(
+      given = "Anthony",
+      family = "Bryk",
+      role = c("aut"),
+      comment = "author of 1991 article"
+    ),
+    person(
+      given = "Michael",
+      family = "Seltzer",
+      role = c("aut"),
+      comment = "author of 1991 article"
+    ),
+    person(
+      given = "Thomas",
+      family = "Lyons",
+      role = c("aut"),
+      comment = "author of 1991 article"
+    )
+  )
+Description: 
+    Provides vocabulary growth dataset from Huttenlocher et al. (1991)
+    <https://doi.org/10.1037/0012-1649.27.2.236>. This dataset is useful 
+    educationally because it features longitudinal/repeated measures growth 
+    data. It is also unusual because the only fixed effect predictor is 
+    quadratic time--that is, there is no intercept or linear time terms.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    R (>= 2.10)
+RoxygenNote: 7.1.2

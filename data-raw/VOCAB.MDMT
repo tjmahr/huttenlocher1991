@@ -1,0 +1,25 @@
+#HLM2 MDM CREATION TEMPLATE
+growthmodel:y
+rawdattype:ascii
+l1fname:VOCAB1.DAT
+l2fname:VOCAB2.DAT
+numl1var:5
+numl2var:4
+l1format:(1X,A8,5X,4F12.3,/,F12.3)
+l2format:(1X,A8,5X,4F12.3)
+l1missing:n
+timeofdeletion:now
+mdmname:VOCAB.MDM
+*begin l1vars
+AGE
+VOCAB
+AGE12
+AGE12SQ
+PERS
+*end l1vars
+*begin l2vars
+MOMSPEAK
+SEX
+GROUP
+LOGMOM
+*end l2vars

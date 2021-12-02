@@ -1,0 +1,116 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+library(tidyverse)
+
+```
+
+# huttenlocher1991
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+This package provides the vocabulary growth data from the following article:
+
+> Huttenlocher, J., Haight, W., Bryk, A., Seltzer, M., & Lyons, T. (1991). Early
+> vocabulary growth: Relation to language input and gender. *Developmental
+> Psychology*, *27*(2), 236–248. <https://doi.org/10.1037/0012-1649.27.2.236>
+
+
+This dataset is useful educationally because it features longitudinal/repeated
+measures growth data. It is also unusual because in the associated article, the
+only fixed effect predictor for growth is quadratic time--that is, there are
+no intercept or linear time terms.
+
+
+## Installation
+
+You can install the development version of huttenlocher1991 like so:
+
+``` r
+remotes::install_github("tjmahr/huttenlocher1991)
+```
+
+## Example
+
+Here are the data all plotted.
+
+```{r}
+#| spag-1, fig.width = 3, fig.height = 2.5, dpi = 300, out.width = "50%"
+library(huttenlocher1991)
+library(tidyverse)
+
+vocab_growth
+
+ggplot(vocab_growth) + 
+  aes(x = age, y = vocab) + 
+  geom_line(aes(group = id))
+```
+
+Here is the "obvious" fully specified growth model.
+
+```{r}
+library(lme4)
+
+m <- lmer(
+  vocab ~ age_12 + age_12_sq + (age_12 + age_12_sq | id),
+  vocab_growth
+)
+summary(m)
+```
+
+They note in footnote 2 that there was high collinearity between
+π<sub>1*i*</sub> and π<sub>2*i*</sub> (the two random slopes) which we see
+above.
+
+They use a reduced quadratic model, which I think was basically:
+
+```{r}
+mr <- lmer(
+  vocab ~  0 + age_12_sq + (0 + age_12_sq | id),
+  vocab_growth
+)
+summary(mr)
+```
+
+There is no intercept because at x = 0 (age = 12 months), vocabulary should be 0 (?).
+
+If I include `group`, I can reproduce the coefficients from Table 1, which makes
+me think I am on the right track.
+
+```{r}
+mr_group <- lmer(
+  vocab ~  0 + age_12_sq + age_12_sq:group + (0 + age_12_sq | id),
+  vocab_growth
+)
+summary(mr_group)
+```
+
+Finally, we can recreate the figures:
+
+```{r}
+#| spag-2, fig.width = 3, fig.height = 2.5, dpi = 300, out.width = "50%"
+library(broom.mixed)
+data <- mr %>% 
+  augment(newdata = vocab_growth)
+
+ggplot(data %>% filter(id %in% c(11, 5, 7))) +
+  aes(x = age, y = vocab, shape = factor(id)) +
+  geom_point() +
+  geom_line(aes(y = .fitted, linetype = factor(id))) + 
+  guides(shape = "none", linetype = "none") + 
+  labs(x = "age [months]", y = "vocabulary")
+
+knitr::include_graphics("man/figures/f1.png")
+```
+
