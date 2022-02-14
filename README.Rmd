@@ -41,7 +41,7 @@ created a .csv-file out of it.
 You can install the development version of huttenlocher1991 like so:
 
 ``` r
-remotes::install_github("tjmahr/huttenlocher1991)
+remotes::install_github("tjmahr/huttenlocher1991")
 ```
 
 ## Example
